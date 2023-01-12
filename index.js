@@ -10,6 +10,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from "fs";
 
+import open from "open";
+
 //NOTE: Const
 
 const program = new Command();
@@ -21,9 +23,12 @@ const parameters = [
 ];
 
 //NOTE: commandIndex
+
 let commandIndex = 0;
 
 //NOTE: ExpressJs and dirname config
+
+const port = 8000;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -57,7 +62,7 @@ function video() {
       videoStream.pipe(res);
   });
 
-  app.listen(8000);
+  app.listen(port || 8000);
 }
 
 //NOTE: CLI Functions
@@ -92,10 +97,12 @@ async function fakeError(index) {
     await sleep();
     process.stdout.write(and + '\n');
     await sleep();
+    //NOTE: open webpage in default browser
+    open(`http://localhost:${port}`);
     while(true) {
       await sleep(200);
       process.stdout.write(magicWord + '\n');
-    } 
+    }
   } else {
     process.stdout.write('\n');
   }

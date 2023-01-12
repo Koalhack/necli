@@ -1,0 +1,15 @@
+{
+  "name": "necli",
+  "version": "1.0.0",
+  "description": "A little cli inspired by Jurassic Park",
+  "main": "index.js",
+  "type": "module",
+  "repository": "https://gitea.koalhack.ovh/KoalHack/necli.git",
+  "author": "Koalhack <alexandre.saner@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.5.0",
+    "express": "^4.18.2",
+    "qoa": "^0.2.0"
+  }
+}

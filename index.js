@@ -5,6 +5,11 @@
 import inquirer from "inquirer";
 import { Command } from "commander";
 
+import express from "express";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import fs from "fs";
+
 //NOTE: Const
 
 const program = new Command();
@@ -16,10 +21,46 @@ const parameters = [
 ];
 
 //NOTE: commandIndex
-
 let commandIndex = 0;
 
-//NOTE: Functions
+//NOTE: ExpressJs and dirname config
+const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+//NOTE: Server Function
+
+function video() {
+  app.get("/", function (req, res) {
+      res.sendFile(__dirname + "/server/index.html");
+  });
+
+  app.get("/video", function (req, res) {
+      const range = req.headers.range;
+      if (!range) {
+          res.status(400).send("Requires Range header");
+      }
+      const videoPath = __dirname + "/assets/magicWord.mp4";
+      const videoSize = fs.statSync(videoPath).size;
+      const CHUNK_SIZE = 10 ** 6;
+      const start = Number(range.replace(/\D/g, ""));
+      const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+      const contentLength = end - start + 1;
+      const headers = {
+          "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+          "Accept-Ranges": "bytes",
+          "Content-Length": contentLength,
+          "Content-Type": "video/mp4",
+      };
+      res.writeHead(206, headers);
+      const videoStream = fs.createReadStream(videoPath, { start, end });
+      videoStream.pipe(res);
+  });
+
+  app.listen(8000);
+}
+
+//NOTE: CLI Functions
 
 const sleep = (ms = 1000) => new Promise((r) => setTimeout(r, ms));
 
@@ -104,5 +145,5 @@ async function init() {
 }
 
 //NOTE: main
-
+video();
 init();

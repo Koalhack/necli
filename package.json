@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A little cli inspired by Jurassic Park",
   "main": "index.js",
+  "bin": {
+    "necli": "./index.js"
+  },
   "type": "module",
   "repository": "https://gitea.koalhack.ovh/KoalHack/necli.git",
   "author": "Koalhack <alexandre.saner@gmail.com>",

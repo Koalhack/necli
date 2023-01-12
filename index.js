@@ -1,3 +1,7 @@
+#! /usr/bin/env node
+
+//NOTE: import packages
+
 import inquirer from "inquirer";
 import { Command } from "commander";
 
@@ -75,6 +79,15 @@ async function handleAnswer(inputCommand) {
 }
 
 async function init() {
+
+  //NOTE: Command option
+
+  program
+    .version("4.0.5")
+    .description("A little cli script inspired by Jurassic Park")
+    .parse();
+
+  //NOTE: Launching text
   await sleep(200);
   process.stdout.write('Jurassic Park, System Security Interface \n');
 
@@ -83,12 +96,13 @@ async function init() {
 
   await sleep(200);
   process.stdout.write('Ready...\n');
-
+  
+  //NOTE: Loop of command
   while(commandIndex !== 3) {
     await askCommand();
   }
 }
 
-//NOTE: main
+//NOTE: export 
 
-init();
+export default init();

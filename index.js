@@ -33,7 +33,8 @@ async function askCommand() {
   const answer = await inquirer.prompt({
     name: 'command',
     type: 'input',
-    message: '>'
+    message: '>',
+    prefix: ' ',
   });
 
   return handleAnswer(answer.command)
@@ -49,6 +50,7 @@ async function fakeError(index) {
   if (index === 3) {
     await sleep();
     process.stdout.write(and + '\n');
+    await sleep();
     while(true) {
       await sleep(200);
       process.stdout.write(magicWord + '\n');
@@ -59,14 +61,12 @@ async function fakeError(index) {
 }
 
 async function error(command) {
-  process.stdout.write(`Command '${command}' not found \n`);
+  process.stdout.write(`Command '${command.split(' ')[0]}' not found \n`);
 }
 
 async function handleAnswer(inputCommand) {
   inputCommand = String(inputCommand).toLowerCase();
-  console.log(activeCommand(command, parameters, commandIndex));
   const isCorrect = inputCommand === activeCommand(command, parameters, commandIndex);
-  
 
   await sleep();
 
@@ -88,13 +88,13 @@ async function init() {
     .parse();
 
   //NOTE: Launching text
-  await sleep(200);
+  await sleep(300);
   process.stdout.write('Jurassic Park, System Security Interface \n');
 
-  await sleep(200);
+  await sleep(300);
   process.stdout.write('Version 4.0.5, Alpha E \n');
 
-  await sleep(200);
+  await sleep(300);
   process.stdout.write('Ready...\n');
   
   //NOTE: Loop of command
@@ -103,6 +103,6 @@ async function init() {
   }
 }
 
-//NOTE: export 
+//NOTE: main
 
-export default init();
+init();
